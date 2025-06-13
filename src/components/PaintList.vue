@@ -1,11 +1,19 @@
 <template>
-  <div>
-    <input v-model="search" placeholder="Buscar por código, nome ou marca" class="form-control mb-3" />
-    <ul class="list-group">
-      <li v-for="paint in filteredPaints" :key="paint.id" class="list-group-item">
-        <strong>{{ paint.codigo }}</strong> - {{ paint.nome }} ({{ paint.marca }}, {{ paint.ano }})
-      </li>
-    </ul>
+  <div class="card shadow-sm">
+    <div class="card-header bg-white border-bottom">
+      <h5 class="mb-0">Lista de Tintas</h5>
+    </div>
+    <div class="card-body">
+      <input v-model="search" placeholder="Buscar por código, nome ou marca" class="form-control mb-4" />
+      <ul class="list-group">
+        <li v-for="paint in filteredPaints" :key="paint.id" class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ paint.codigo }}</strong> - {{ paint.nome }}<br>
+            <small class="text-muted">{{ paint.marca }} • {{ paint.ano }}</small>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
