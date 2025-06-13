@@ -9,24 +9,25 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted } from 'vue';
 import { db } from '../firebase/config';
 import { collection, getDocs } from 'firebase/firestore';
-export default {
-  data: () => ({ paints: [], search: '' }),
-  computed: {
-    filteredPaints() {
-      const s = this.search.toLowerCase();
-      return this.paints.filter(p =>
-        p.codigo.toLowerCase().includes(s) ||
-        p.nome.toLowerCase().includes(s) ||
-        p.marca.toLowerCase().includes(s)
-      );
-    }
-  },
-  async created() {
-    const snapshot = await getDocs(collection(db, 'tintas'));
-    this.paints = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  }
-};
+
+const paints = ref([]);
+const search = ref('');
+
+const filteredPaints = computed(() => {
+  const s = search.value.toLowerCase();
+  return paints.value.filter(p =>
+    p.codigo.toLowerCase().includes(s) ||
+    p.nome.toLowerCase().includes(s) ||
+    p.marca.toLowerCase().includes(s)
+  );
+});
+
+onMounted(async () => {
+  const snapshot = await getDocs(collection(db, 'tintas'));
+  paints.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+});
 </script>

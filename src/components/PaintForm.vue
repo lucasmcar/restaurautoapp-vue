@@ -8,17 +8,17 @@
   </form>
 </template>
 
-<script>
+<script setup>
+import { reactive } from 'vue';
 import { db } from '../firebase/config';
 import { collection, addDoc } from 'firebase/firestore';
-export default {
-  data: () => ({ paint: { codigo: '', nome: '', marca: '', ano: '' } }),
-  methods: {
-    async addPaint() {
-      await addDoc(collection(db, 'tintas'), this.paint);
-      this.paint = { codigo: '', nome: '', marca: '', ano: '' };
-      alert('Tinta salva com sucesso!');
-    }
-  }
+
+const paint = reactive({ codigo: '', nome: '', marca: '', ano: '' });
+
+const addPaint = async () => {
+  await addDoc(collection(db, 'tintas'), paint);
+  paint.codigo = paint.nome = paint.marca = '';
+  paint.ano = '';
+  alert('Tinta salva com sucesso!');
 };
 </script>
